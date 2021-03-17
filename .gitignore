@@ -1,0 +1,28 @@
+# ライブラリやビルド結果
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Dd]ebug/
+[Rr]elease/
+
+ 
+# ソリューションやプロジェクトファイル
+ExportedObj/
+*.csproj
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+ 
+# ログファイル
+Logs/
+*.log
+ 
+# VisualStudio
+.vs/
