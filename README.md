@@ -9,7 +9,7 @@ author [夜綱](https://twitter.com/sub_827)
 
 ## 使い方
 `using PokemonPRNG.LCG32.StandardLCG`するだけで
-```
+```cs
 uint seed = 0xbadface;
 seed.Advance(827); // 827消費する.
 for(int i=0; i<827; i++){
@@ -32,7 +32,6 @@ namespaceによってLCGの種類が異なりますが、処理の内容は同�
 | StandardLCG | 3,4世代で一般的に用いられるLCG. | `S_{n+1} = 0x41C64E6D * S_n + 0x6073` |
 | GCLCG | コロシアム, XDで用いられるLCG. | `S_{n+1} = 0x343FD * S_n + 0x269EC3`|
 | StaticLCG | IDくじ用の乱数等に用いられるLCG. | `S_{n+1} = 0x41C64E6D * S_n + 0x3039 `|
-| ReverseStdLCG | StandardLCGの逆列. | `S_{n+1} = 0xEEB9EB65 * S_n + 0xA3561A1` |
 
 ##### 拡張メソッド
 
