@@ -1,23 +1,4 @@
-﻿/*
- * Copyright (C) Rei HOBARA 2007
- * 
- * Name:
- *     SFMT.cs
- * Class:
- *     Rei.Random.SFMT
- *     Rei.Random.MTPeriodType
- * Purpose:
- *     A random number generator using SIMD-oriented Fast Mersenne Twister(SFMT).
- * Remark:
- *     This code is C# implementation of SFMT.
- *     SFMT was introduced by Mutsuo Saito and Makoto Matsumoto.
- *     See http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html for detail of SFMT.
- * History:
- *     2007/10/6 initial release.
- * 
- */
-
-using System.Linq;
+﻿using System.Linq;
 namespace PokemonPRNG.SFMT
 {
     /// <summary>
