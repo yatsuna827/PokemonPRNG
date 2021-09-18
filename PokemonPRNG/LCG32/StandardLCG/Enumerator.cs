@@ -74,5 +74,44 @@ namespace PokemonPRNG.LCG32.StandardLCG
             int idx = 0;
             foreach (var seed in seedEnumerator) yield return (idx++, seed, igenerator.Generate(seed));
         }
+        /// <summary>
+        /// seedEnumeratorから受け取ったseedから生成処理を行い、得られるTResultを返し続けます.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="seed"></param>
+        /// <param name="igenerator"></param>
+        /// <returns></returns>
+        public static IEnumerable<(int index, uint seed, TResult result)> EnumerateGeneration<TResult, TArg1>
+            (this IEnumerable<uint> seedEnumerator, IGeneratable<TResult, TArg1> igenerator, TArg1 arg1)
+        {
+            int idx = 0;
+            foreach (var seed in seedEnumerator) yield return (idx++, seed, igenerator.Generate(seed, arg1));
+        }
+        /// <summary>
+        /// seedEnumeratorから受け取ったseedから生成処理を行い、得られるTResultを返し続けます.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="seed"></param>
+        /// <param name="igenerator"></param>
+        /// <returns></returns>
+        public static IEnumerable<(int index, uint seed, TResult result)> EnumerateGeneration<TResult, TArg1, TArg2>
+            (this IEnumerable<uint> seedEnumerator, IGeneratable<TResult, TArg1, TArg2> igenerator, TArg1 arg1, TArg2 arg2)
+        {
+            int idx = 0;
+            foreach (var seed in seedEnumerator) yield return (idx++, seed, igenerator.Generate(seed, arg1, arg2));
+        }
+        /// <summary>
+        /// seedEnumeratorから受け取ったseedから生成処理を行い、得られるTResultを返し続けます.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="seed"></param>
+        /// <param name="igenerator"></param>
+        /// <returns></returns>
+        public static IEnumerable<(int index, uint seed, TResult result)> EnumerateGeneration<TResult, TArg1, TArg2, TArg3>
+            (this IEnumerable<uint> seedEnumerator, IGeneratable<TResult, TArg1, TArg2, TArg3> igenerator, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+        {
+            int idx = 0;
+            foreach (var seed in seedEnumerator) yield return (idx++, seed, igenerator.Generate(seed, arg1, arg2, arg3));
+        }
     }
 }
