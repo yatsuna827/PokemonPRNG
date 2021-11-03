@@ -8,7 +8,7 @@ namespace PokemonPRNG.LCG32.StaticLCG
 {
     public static class StaticLCGExtension
     {
-        private static readonly LCG32 lcg = new LCG32(LCGType.StaticLCG);
+        private static readonly LCG32 lcg = new LCG32(LCG32Params.StaticLCG);
         /// <summary>
         /// 次のseedを取得します. 渡したseedは変更されません.
         /// </summary>

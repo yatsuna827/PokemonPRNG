@@ -8,7 +8,7 @@ namespace PokemonPRNG.LCG32.StandardLCG
 {
     public static class StandardLCGExtension
     {
-        private static readonly LCG32 lcg = new LCG32(LCGType.StandardLCG);
+        private static readonly LCG32 lcg = new LCG32(LCG32Params.StandardLCG);
         /// <summary>
         /// 初期seedと消費数を指定してseedを取得します.
         /// </summary>
@@ -107,19 +107,5 @@ namespace PokemonPRNG.LCG32.StandardLCG
         /// <returns></returns>
         public static uint GetIndex(this uint seed, uint InitialSeed) { return lcg.CalcIndex(seed) - lcg.CalcIndex(InitialSeed); }
 
-        /// <summary>
-        /// seedをn進める関数を生成します.
-        /// 消費数固定のAdvanceを大量に呼び出す場合はこちらを使う方が速くなります.
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public static Func<uint, uint> GenerateAdvanceFunction(uint n) => lcg.GenerateAdvanceFunction(n);
-        /// <summary>
-        /// seedをn進める関数を生成します.
-        /// 消費数固定のBackを大量に呼び出す場合はこちらを使う方が速くなります.
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public static Func<uint, uint> GenerateBackFunction(uint n) => lcg.GenerateBackFunction(n);
     }
 }
