@@ -11,7 +11,7 @@ namespace PokemonPRNG.Xoroshiro128p
         public static ulong GetRand(ref this (ulong s0, ulong s1) state)
         {
             var (_s0, _s1) = (state.s0, state.s0 ^ state.s1);
-            var res = _s0 + _s1;
+            var res = state.s0 + state.s1;
 
             state = (((_s0 << 24) | (_s0 >> 40)) ^ _s1 ^ (_s1 << 16), (_s1 << 37) | (_s1 >> 27));
 
