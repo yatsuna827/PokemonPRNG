@@ -53,7 +53,19 @@ namespace PokemonPRNG.Xoroshiro128p
             return state = (t, t ^ s1_rotl27);
         }
 
-        public static string ToSeed(this (ulong s0, ulong s1) state) => $"{state.s1:X16}{state.s0:X16}";
-    }
+        public static string ToU128String(this (ulong s0, ulong s1) state) => $"{state.s1:X16}{state.s0:X16}";
+        public static (ulong s0, ulong s1) FromU128String(this string hex)
+        {
+            if (hex.Length != 32) throw new ArgumentException("bad argument");
+
+            var t0 = hex.Substring(16);
+            var t1 = hex.Substring(0, 16);
+
+            var s0 = Convert.ToUInt64(t0, 16);
+            var s1 = Convert.ToUInt64(t1, 16);
+
+            return (s0, s1);
+        }
+        }
 
 }
