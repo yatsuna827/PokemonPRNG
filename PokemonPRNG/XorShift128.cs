@@ -1,4 +1,7 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
+
+
 namespace PokemonPRNG.XorShift128
 {
     public static class XorShift128Ext
@@ -10,7 +13,7 @@ namespace PokemonPRNG.XorShift128
 
             state = (state.s1, state.s2, state.s3, t2);
 
-            return t2;
+            return (t2 % 0xFFFFFFFF) + 0x80000000;
         }
         public static uint GetRand(ref this (uint s0, uint s1, uint s2, uint s3) state, uint n)
         {
@@ -19,7 +22,7 @@ namespace PokemonPRNG.XorShift128
 
             state = (state.s1, state.s2, state.s3, t2);
 
-            return t2 % n;
+            return ((t2 % 0xFFFFFFFF) + 0x80000000) % n;
         }
 
         public static float GetRand_f(ref this (uint s0, uint s1, uint s2, uint s3) state)
@@ -102,5 +105,28 @@ namespace PokemonPRNG.XorShift128
 
             return state;
         }
+    }
+
+    public interface IGeneratable<out TResult>
+    {
+        TResult Generate((uint s0, uint s1, uint s2, uint s3) seed);
+    }
+    public interface IGeneratable<out TResult, in TArg1>
+    {
+        TResult Generate((uint s0, uint s1, uint s2, uint s3) seed, TArg1 arg1);
+    }
+
+    public static class CommonEnumerator
+    {
+        public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
+            => enumerator.Select((_, i) => (i, _));
+
+        public static IEnumerable<TResult> EnumerateGeneration<TResult>
+            (this IEnumerable<(uint s0, uint s1, uint s2, uint s3)> seedEnumerator, IGeneratable<TResult> igenerator)
+            => seedEnumerator.Select(igenerator.Generate);
+
+        public static IEnumerable<TResult> EnumerateGeneration<TResult, TArg1>
+            (this IEnumerable<(uint s0, uint s1, uint s2, uint s3)> seedEnumerator, IGeneratable<TResult, TArg1> igenerator, TArg1 arg1)
+            => seedEnumerator.Select(_ => igenerator.Generate(_, arg1));
     }
 }
