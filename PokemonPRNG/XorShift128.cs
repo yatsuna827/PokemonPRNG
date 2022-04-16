@@ -121,6 +121,12 @@ namespace PokemonPRNG.XorShift128
         public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
             => enumerator.Select((_, i) => (i, _));
 
+        public static IEnumerable<(uint s0, uint s1, uint s2, uint s3)> EnumerateSeed(this (uint s0, uint s1, uint s2, uint s3) seed)
+        {
+            yield return seed;
+            while (true) yield return seed.Advance();
+        }
+
         public static IEnumerable<TResult> EnumerateGeneration<TResult>
             (this IEnumerable<(uint s0, uint s1, uint s2, uint s3)> seedEnumerator, IGeneratable<TResult> igenerator)
             => seedEnumerator.Select(igenerator.Generate);
