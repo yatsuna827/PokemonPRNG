@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>yatsuna_827</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -9,7 +9,7 @@
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/yatsuna827/PokemonPRNG</PackageProjectUrl>
     <RepositoryUrl></RepositoryUrl>
-    <Version>3.5.3</Version>
+    <Version>4.0.0</Version>
   </PropertyGroup>
 
 </Project>
