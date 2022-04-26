@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>yatsuna_827</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>ポケモン乱数調整ツール用の疑似乱数クラスを提供するライブラリです。</Description>
+    <Copyright></Copyright>
+    <PackageProjectUrl>https://github.com/yatsuna827/PokemonPRNG</PackageProjectUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <Version>3.5.3</Version>
+  </PropertyGroup>
+
+</Project>

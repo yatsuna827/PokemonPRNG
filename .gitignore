@@ -9,7 +9,6 @@ PublishProfiles/
  
 # ソリューションやプロジェクトファイル
 ExportedObj/
-*.csproj
 *.suo
 *.tmp
 *.user
