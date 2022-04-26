@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -104,6 +105,26 @@ namespace PokemonPRNG.XorShift128
                 state.Back();
 
             return state;
+        }
+
+        public static string ToU128String(this (uint s0, uint s1, uint s2, uint s3) state) => $"{state.s0:X8}{state.s1:X8}{state.s2:X8}{state.s3:X8}";
+        public static (uint s0, uint s1, uint s2, uint s3) FromU128String(this string hex)
+        {
+            if (hex.Length > 32 || hex.Length == 0) throw new ArgumentException("bad argument");
+
+            hex = hex.PadLeft(32, '0');
+
+            var t0 = hex.Substring(0, 8);
+            var t1 = hex.Substring(8, 8);
+            var t2 = hex.Substring(16, 8);
+            var t3 = hex.Substring(24, 8);
+
+            var s0 = Convert.ToUInt32(t0, 16);
+            var s1 = Convert.ToUInt32(t1, 16);
+            var s2 = Convert.ToUInt32(t2, 16);
+            var s3 = Convert.ToUInt32(t3, 16);
+
+            return (s0, s1, s2, s3);
         }
     }
 
