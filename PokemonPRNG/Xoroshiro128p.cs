@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace PokemonPRNG.Xoroshiro128p
 {
@@ -24,7 +24,7 @@ namespace PokemonPRNG.Xoroshiro128p
             while (true)
             {
                 var result = state.GetRand() & ceil2;
-                if (result <= range) return result;
+                if (result < range) return result;
             }
         }
         private static ulong GetRandPow2(uint num)
@@ -36,6 +36,22 @@ namespace PokemonPRNG.Xoroshiro128p
             return res - 1;
         }
 
+        public static (ulong s0, ulong s1) Next(this (ulong s0, ulong s1) state)
+        {
+            var (s0, s1) = (state.s0, state.s0 ^ state.s1);
+
+            return (((s0 << 24) | (s0 >> 40)) ^ s1 ^ (s1 << 16), (s1 << 37) | (s1 >> 27));
+        }
+        public static (ulong s0, ulong s1) Prev(this (ulong s0, ulong s1) state)
+        {
+            var (s0, s1) = state;
+
+            var s1_rotl27 = (s1 << 27) | (s1 >> 37);
+            var t = s0 ^ (s1_rotl27 << 16);
+            t = ((t << 40) | (t >> 24)) ^ ((s1 << 3) | (s1 >> 61));
+
+            return (t, t ^ s1_rotl27);
+        }
         public static (ulong s0, ulong s1) Advance(ref this (ulong s0, ulong s1) state)
         {
             var (s0, s1) = (state.s0, state.s0 ^ state.s1);
@@ -351,6 +367,20 @@ namespace PokemonPRNG.Xoroshiro128p
                 backJumpMatrixes[i] = backJumpMatrixes[i - 1].Products(backJumpMatrixes[i - 1]);
         }
 
+        public static (ulong s0, ulong s1) Next(this (ulong s0, ulong s1) state, uint n)
+        {
+            for (int i = 0; i < 32; i++)
+                if ((n & (1UL << i)) != 0) state = state.Products(jumpMatrixes[i]);
+
+            return state;
+        }
+        public static (ulong s0, ulong s1) Next(this (ulong s0, ulong s1) state, ulong n)
+        {
+            for (int i = 0; i < 64; i++)
+                if ((n & (1UL << i)) != 0) state = state.Products(jumpMatrixes[i]);
+
+            return state;
+        }
         public static (ulong s0, ulong s1) Advance(ref this (ulong s0, ulong s1) state, uint n)
         {
             for (int i = 0; i < 32; i++)
@@ -366,6 +396,20 @@ namespace PokemonPRNG.Xoroshiro128p
             return state;
         }
 
+        public static (ulong s0, ulong s1) Prev(this (ulong s0, ulong s1) state, uint n)
+        {
+            for (int i = 0; i < 32; i++)
+                if ((n & (1UL << i)) != 0) state = state.Products(backJumpMatrixes[i]);
+
+            return state;
+        }
+        public static (ulong s0, ulong s1) Prev(this (ulong s0, ulong s1) state, ulong n)
+        {
+            for (int i = 0; i < 64; i++)
+                if ((n & (1UL << i)) != 0) state = state.Products(backJumpMatrixes[i]);
+
+            return state;
+        }
         public static (ulong s0, ulong s1) Back(ref this (ulong s0, ulong s1) state, uint n)
         {
             for (int i = 0; i < 32; i++)
@@ -462,5 +506,34 @@ namespace PokemonPRNG.Xoroshiro128p
             x += x >> 32;
             return (int)(x & 1);
         }
+    }
+
+    public interface IGeneratable<out TResult>
+    {
+        TResult Generate((ulong s0, ulong s1) seed);
+    }
+    public interface IGeneratable<out TResult, in TArg1>
+    {
+        TResult Generate((ulong s0, ulong s1) seed, TArg1 arg1);
+    }
+
+    public static class XoroshiroExt
+    {
+        public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
+            => enumerator.Select((_, i) => (i, _));
+
+        public static IEnumerable<(ulong s0, ulong s1)> Enumerate(this (ulong s0, ulong s1) seed)
+        {
+            yield return seed;
+            while (true)
+                yield return seed.Advance();
+        }
+        public static IEnumerable<TResult> Enumerate<TResult>
+            (this IEnumerable<(ulong s0, ulong s1)> seedEnumerator, IGeneratable<TResult> igenerator)
+            => seedEnumerator.Select(igenerator.Generate);
+
+        public static IEnumerable<TResult> Enumerate<TResult, TArg1>
+            (this IEnumerable<(ulong s0, ulong s1)> seedEnumerator, IGeneratable<TResult, TArg1> igenerator, TArg1 arg1)
+            => seedEnumerator.Select(_ => igenerator.Generate(_, arg1));
     }
 }
