@@ -17,12 +17,33 @@ namespace PokemonPRNG.Xoroshiro128p
 
             return res;
         }
+        public static ulong GetRand(ref this (ulong s0, ulong s1) state, ref uint index)
+        {
+            var (_s0, _s1) = (state.s0, state.s0 ^ state.s1);
+            var res = state.s0 + state.s1;
+
+            state = (((_s0 << 24) | (_s0 >> 40)) ^ _s1 ^ (_s1 << 16), (_s1 << 37) | (_s1 >> 27));
+
+            index++;
+            return res;
+        }
         public static ulong GetRand(ref this (ulong s0, ulong s1) state, uint range)
         {
             var ceil2 = GetRandPow2(range);
 
             while (true)
             {
+                var result = state.GetRand() & ceil2;
+                if (result < range) return result;
+            }
+        }
+        public static ulong GetRand(ref this (ulong s0, ulong s1) state, uint range, ref uint index)
+        {
+            var ceil2 = GetRandPow2(range);
+
+            while (true)
+            {
+                index++;
                 var result = state.GetRand() & ceil2;
                 if (result < range) return result;
             }
@@ -58,6 +79,13 @@ namespace PokemonPRNG.Xoroshiro128p
 
             return state = (((s0 << 24) | (s0 >> 40)) ^ s1 ^ (s1 << 16), (s1 << 37) | (s1 >> 27));
         }
+        public static (ulong s0, ulong s1) Advance(ref this (ulong s0, ulong s1) state, ref uint index)
+        {
+            var (s0, s1) = (state.s0, state.s0 ^ state.s1);
+
+            index++;
+            return state = (((s0 << 24) | (s0 >> 40)) ^ s1 ^ (s1 << 16), (s1 << 37) | (s1 >> 27));
+        }
         public static (ulong s0, ulong s1) Back(ref this (ulong s0, ulong s1) state)
         {
             var (s0, s1) = state;
@@ -66,6 +94,17 @@ namespace PokemonPRNG.Xoroshiro128p
             var t = s0 ^ (s1_rotl27 << 16);
             t = ((t << 40) | (t >> 24)) ^ ((s1 << 3) | (s1 >> 61));
 
+            return state = (t, t ^ s1_rotl27);
+        }
+        public static (ulong s0, ulong s1) Back(ref this (ulong s0, ulong s1) state, ref uint index)
+        {
+            var (s0, s1) = state;
+
+            var s1_rotl27 = (s1 << 27) | (s1 >> 37);
+            var t = s0 ^ (s1_rotl27 << 16);
+            t = ((t << 40) | (t >> 24)) ^ ((s1 << 3) | (s1 >> 61));
+
+            index--;
             return state = (t, t ^ s1_rotl27);
         }
 
@@ -388,6 +427,14 @@ namespace PokemonPRNG.Xoroshiro128p
 
             return state;
         }
+        public static (ulong s0, ulong s1) Advance(ref this (ulong s0, ulong s1) state, uint n, ref uint index)
+        {
+            for (int i = 0; i < 32; i++)
+                if ((n & (1UL << i)) != 0) state = state.Products(jumpMatrixes[i]);
+
+            index += n;
+            return state;
+        }
         public static (ulong s0, ulong s1) Advance(ref this (ulong s0, ulong s1) state, ulong n)
         {
             for (int i = 0; i < 64; i++)
@@ -415,6 +462,14 @@ namespace PokemonPRNG.Xoroshiro128p
             for (int i = 0; i < 32; i++)
                 if ((n & (1UL << i)) != 0) state = state.Products(backJumpMatrixes[i]);
 
+            return state;
+        }
+        public static (ulong s0, ulong s1) Back(ref this (ulong s0, ulong s1) state, uint n, ref uint index)
+        {
+            for (int i = 0; i < 32; i++)
+                if ((n & (1UL << i)) != 0) state = state.Products(backJumpMatrixes[i]);
+
+            index += n;
             return state;
         }
         public static (ulong s0, ulong s1) Back(ref this (ulong s0, ulong s1) state, ulong n)
@@ -517,8 +572,26 @@ namespace PokemonPRNG.Xoroshiro128p
         TResult Generate((ulong s0, ulong s1) seed, TArg1 arg1);
     }
 
+    public interface ISideEffectiveGeneratable<out TResult>
+    {
+        TResult Generate(ref (ulong s0, ulong s1) seed);
+    }
+    public interface ISideEffectiveGeneratable<out TResult, in TArg1>
+    {
+        TResult Generate(ref (ulong s0, ulong s1) seed, TArg1 arg1);
+    }
+
     public static class XoroshiroExt
     {
+        public static TResult Generate<TResult>(this (ulong s0, ulong s1) seed, IGeneratable<TResult> generatable)
+            => generatable.Generate(seed);
+        public static TResult Generate<TResult, TArg>(this (ulong s0, ulong s1) seed, IGeneratable<TResult, TArg> generatable, TArg arg)
+            => generatable.Generate(seed, arg);
+        public static TResult Generate<TResult>(ref this (ulong s0, ulong s1) seed, ISideEffectiveGeneratable<TResult> generatable)
+            => generatable.Generate(ref seed);
+        public static TResult Generate<TResult, TArg>(ref this (ulong s0, ulong s1) seed, ISideEffectiveGeneratable<TResult, TArg> generatable, TArg arg)
+            => generatable.Generate(ref seed, arg);
+
         public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
             => enumerator.Select((_, i) => (i, _));
 
