@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PokemonPRNG.LCG32
 {
-    public readonly struct RNGResult<T>
+    public class RNGResult<T>
     {
         public T Content { get; }
         public uint HeadSeed { get; }
@@ -16,15 +16,12 @@ namespace PokemonPRNG.LCG32
         public void Deconstruct(out T content, out uint head, out uint tail) => (content, head, tail) = (Content, HeadSeed, TailSeed);
     }
 
-    public readonly struct RNGResult<TContent, TOption>
+    public class RNGResult<TContent, TOption> : RNGResult<TContent>
     {
-        public TContent Content { get; }
         public TOption Option { get; }
-        public uint HeadSeed { get; }
-        public uint TailSeed { get; }
 
-        public RNGResult(TContent content, TOption option, uint head, uint tail)
-            => (Content, Option, HeadSeed, TailSeed) = (content, option, head, tail);
+        public RNGResult(TContent content, TOption option, uint head, uint tail) : base(content, head, tail)
+            => Option = option;
         public void Deconstruct(out TContent content, out TOption option, out uint seed) => (seed, content, option) = (HeadSeed, Content, Option);
         public void Deconstruct(out TContent content, out TOption option, out uint head, out uint tail) => (content, option, head, tail) = (Content, Option, HeadSeed, TailSeed);
     }
