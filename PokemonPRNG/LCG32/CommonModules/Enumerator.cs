@@ -12,7 +12,7 @@ namespace PokemonPRNG.LCG32
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerator"></param>
         /// <returns></returns>
-        public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
+        public static IEnumerable<(int Index, T Element)> WithIndex<T>(this IEnumerable<T> enumerator)
             => enumerator.Select((_, i) => (i, _));
 
         /// <summary>
