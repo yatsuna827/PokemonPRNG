@@ -572,11 +572,11 @@ namespace PokemonPRNG.Xoroshiro128p
         TResult Generate((ulong s0, ulong s1) seed, TArg1 arg1);
     }
 
-    public interface ISideEffectiveGeneratable<out TResult>
+    public interface IGeneratableEffectful<out TResult>
     {
         TResult Generate(ref (ulong s0, ulong s1) seed);
     }
-    public interface ISideEffectiveGeneratable<out TResult, in TArg1>
+    public interface IGeneratableEffectful<out TResult, in TArg1>
     {
         TResult Generate(ref (ulong s0, ulong s1) seed, TArg1 arg1);
     }
@@ -587,9 +587,9 @@ namespace PokemonPRNG.Xoroshiro128p
             => generatable.Generate(seed);
         public static TResult Generate<TResult, TArg>(this (ulong s0, ulong s1) seed, IGeneratable<TResult, TArg> generatable, TArg arg)
             => generatable.Generate(seed, arg);
-        public static TResult Generate<TResult>(ref this (ulong s0, ulong s1) seed, ISideEffectiveGeneratable<TResult> generatable)
+        public static TResult Generate<TResult>(ref this (ulong s0, ulong s1) seed, IGeneratableEffectful<TResult> generatable)
             => generatable.Generate(ref seed);
-        public static TResult Generate<TResult, TArg>(ref this (ulong s0, ulong s1) seed, ISideEffectiveGeneratable<TResult, TArg> generatable, TArg arg)
+        public static TResult Generate<TResult, TArg>(ref this (ulong s0, ulong s1) seed, IGeneratableEffectful<TResult, TArg> generatable, TArg arg)
             => generatable.Generate(ref seed, arg);
 
         public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
