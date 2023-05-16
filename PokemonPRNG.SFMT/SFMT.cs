@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 namespace PokemonPRNG.SFMT
 {
     /// <summary>
@@ -9,51 +10,48 @@ namespace PokemonPRNG.SFMT
         /// <summary>
         /// 周期を表す指数。
         /// </summary>
-        public const int MEXP = 19937;
-        public const int POS1 = 122;
-        public const int SL1 = 18;
-        public const int SL2 = 1;
-        public const int SR1 = 11;
-        public const int SR2 = 1;
-        public const uint MSK1 = 0xdfffffef;
-        public const uint MSK2 = 0xddfecb7f;
-        public const uint MSK3 = 0xbffaffff;
-        public const uint MSK4 = 0xbffffff6;
-        public const uint PARITY1 = 0x00000001;
-        public const uint PARITY2 = 0x00000000;
-        public const uint PARITY3 = 0x00000000;
-        public const uint PARITY4 = 0x13c9e684;
+        private const int MEXP = 19937;
+        private const uint PARITY1 = 0x00000001;
+        private const uint PARITY2 = 0x00000000;
+        private const uint PARITY3 = 0x00000000;
+        private const uint PARITY4 = 0x13c9e684;
 
         /// <summary>
         /// 各要素を128bitとしたときの内部状態ベクトルの個数。
         /// </summary>
-        public const int N = MEXP / 128 + 1;
+        private const int N = MEXP / 128 + 1;
         /// <summary>
         /// 各要素を32bitとしたときの内部状態ベクトルの個数。
         /// </summary>
-        public const int N32 = N * 4;
+        private const int N32 = N * 4;
 
-        private int randIndex;
-        private readonly uint[] stateVector;
+        private int _randIndex;
+        private readonly uint[] _stateVector;
 
         public ulong Index32 { get; private set; }
         public ulong Index64 { get => Index32 / 2; }
         
-        private SFMT(SFMT parent) { this.Index32 = parent.Index32; randIndex = parent.randIndex; stateVector = parent.stateVector.ToArray(); }
+        private SFMT(SFMT parent) 
+        { 
+            Index32 = parent.Index32; 
+            _randIndex = parent._randIndex; 
+            _stateVector = parent._stateVector.ToArray(); 
+        }
         public SFMT(uint seed)
         {
             //内部状態配列確保
-            stateVector = new uint[N32];
+            _stateVector = new uint[N32];
 
             //内部状態配列初期化
-            stateVector[0] = seed;
-            for (int i = 1; i < N32; i++) stateVector[i] = (uint)(1812433253 * (stateVector[i - 1] ^ (stateVector[i - 1] >> 30)) + i);
+            _stateVector[0] = seed;
+            for (uint i = 1; i < _stateVector.Length; i++)
+                _stateVector[i] = 0x6C078965u * (_stateVector[i - 1] ^ (_stateVector[i - 1] >> 30)) + i;
 
             //確認
             PeriodCertification();
 
             //初期位置設定
-            randIndex = N32;
+            _randIndex = N32;
 
             Index32 = 0;
         }
@@ -65,16 +63,25 @@ namespace PokemonPRNG.SFMT
         /// </summary>
         public uint GetRand32()
         {
-            if (randIndex >= N32)
+            if (_randIndex >= N32)
             {
                 GenerateRandAll();
-                randIndex = 0;
+                _randIndex = 0;
             }
 
             Index32++;
-            return stateVector[randIndex++];
+            return _stateVector[_randIndex++];
         }
         public uint GetRand32(uint m) => GetRand32() % m;
+
+        /// <summary>
+        /// 乱数を進めるユーティリティです。
+        /// 効率的なジャンプ関数は実装していないため、線形時間がかかります。
+        /// </summary>
+        public void Advance(uint n = 1)
+        {
+            for (int i = 0; i < n; i++) GetRand32();
+        }
 
         public ulong GetRand64() => GetRand32() | ((ulong)GetRand32() << 32);
         public ulong GetRand64(uint m) => GetRand64() % m;
@@ -84,10 +91,10 @@ namespace PokemonPRNG.SFMT
         /// </summary>
         private void PeriodCertification()
         {
-            uint[] PARITY = new uint[] { PARITY1, PARITY2, PARITY3, PARITY4 };
+            var PARITY = new uint[] { PARITY1, PARITY2, PARITY3, PARITY4 };
 
-            uint inner = 0;
-            for (int i = 0; i < 4; i++) inner ^= stateVector[i] & PARITY[i];
+            var inner = 0u;
+            for (int i = 0; i < 4; i++) inner ^= _stateVector[i] & PARITY[i];
             for (int i = 16; i > 0; i >>= 1) inner ^= inner >> i;
 
             // check OK
@@ -96,12 +103,12 @@ namespace PokemonPRNG.SFMT
             // check NG, and modification
             for (int i = 0; i < 4; i++)
             {
-                uint work = 1;
+                var work = 1u;
                 for (int j = 0; j < 32; j++, work <<= 1)
                 {
                     if ((work & PARITY[i]) != 0)
                     {
-                        stateVector[i] ^= work;
+                        _stateVector[i] ^= work;
                         return;
                     }
                 }
@@ -113,7 +120,8 @@ namespace PokemonPRNG.SFMT
         /// </summary>
         private void GenerateRandAll()
         {
-            uint[] p = this.stateVector;
+            // コピーではなく別名参照
+            var p = _stateVector;
 
             const int cMEXP = 19937;
             const int cPOS1 = 122;

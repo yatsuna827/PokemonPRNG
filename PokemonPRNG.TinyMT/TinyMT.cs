@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace PokemonPRNG
 {
+    // TODO: ValueTupleのExtensionで書けるバージョンを提供する
     public class TinyMT
     {
         public TinyMT(uint initialSeed)

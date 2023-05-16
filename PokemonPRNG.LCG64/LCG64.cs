@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PokemonPRNG.LCG64
+﻿namespace PokemonPRNG.LCG64
 {
     public static class LCG64Extension
     {
