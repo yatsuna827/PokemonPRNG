@@ -6,7 +6,16 @@ namespace PokemonPRNG.Xoroshiro128p
 {
     public static class Xoroshiro128p
     {
-        public const ulong FIXSEED = 0x82A2B175229D6A5B;
+        public const ulong MAGIC_NUMBER = 0x82A2B175229D6A5B;
+
+        public static ulong Advance(ref this ulong seed)
+            => seed += MAGIC_NUMBER;
+        public static ulong Advance(ref this ulong seed, uint n)
+            => seed += MAGIC_NUMBER * n;
+        public static ulong Back(ref this ulong seed)
+            => seed -= MAGIC_NUMBER;
+        public static ulong Back(ref this ulong seed, uint n)
+            => seed -= MAGIC_NUMBER * n;
 
         public static ulong GetRand(ref this (ulong s0, ulong s1) state)
         {
@@ -592,8 +601,15 @@ namespace PokemonPRNG.Xoroshiro128p
         public static TResult Generate<TResult, TArg>(ref this (ulong s0, ulong s1) seed, IGeneratableEffectful<TResult, TArg> generatable, TArg arg)
             => generatable.Generate(ref seed, arg);
 
-        public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
+        public static IEnumerable<(int Index, T Element)> WithIndex<T>(this IEnumerable<T> enumerator)
             => enumerator.Select((_, i) => (i, _));
+
+        public static IEnumerable<(ulong s0, ulong s1)> Enumerate(this ulong seed)
+        {
+            yield return (seed, Xoroshiro128p.MAGIC_NUMBER);
+            while (true)
+                yield return (seed += Xoroshiro128p.MAGIC_NUMBER, Xoroshiro128p.MAGIC_NUMBER);
+        }
 
         public static IEnumerable<(ulong s0, ulong s1)> Enumerate(this (ulong s0, ulong s1) seed)
         {
