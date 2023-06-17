@@ -39,5 +39,15 @@ namespace PokemonPRNG.LCG32.StaticLCG
             while (true) yield return seed.GetRand();
         }
 
+        public static IEnumerable<uint> Surround(this uint currentSeed, uint radius)
+        {
+            if (radius >= 0x80000000) throw new ArgumentException("radius is too large");
+
+            var seed = currentSeed.PrevSeed(radius);
+            for (uint i = 0; i <= radius * 2; i++, seed.Advance())
+            {
+                yield return seed;
+            }
+        }
     }
 }

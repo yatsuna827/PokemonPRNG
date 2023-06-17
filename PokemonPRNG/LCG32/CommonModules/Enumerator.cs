@@ -12,8 +12,8 @@ namespace PokemonPRNG.LCG32
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerator"></param>
         /// <returns></returns>
-        public static IEnumerable<(int Index, T Element)> WithIndex<T>(this IEnumerable<T> enumerator)
-            => enumerator.Select((_, i) => (i, _));
+        public static IEnumerable<(int Index, T Element)> WithIndex<T>(this IEnumerable<T> enumerator, int offset = 0)
+            => enumerator.Select((_, i) => (i + offset, _));
 
         /// <summary>
         /// seedEnumeratorから受け取ったseedから生成処理を行い、得られるTResultを返し続けます.
