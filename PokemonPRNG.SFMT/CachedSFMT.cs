@@ -35,9 +35,18 @@ namespace PokemonPRNG.SFMT
 
         public override ulong Index32 { get => _headIndex + (ulong)_tempIndex; }
 
+        [Conditional("DEBUG")]
+        private void CheckCacheBoundary()
+        {
+            if (!(_tempIndex < _capacity - N32))
+                throw new Exception("The number of calls to GetRand has exceeded the cache capacity.");
+        }
+        
         public override uint GetRand32()
         {
-            Debug.Assert(_tempIndex < _capacity - N32);
+            // Conditional("DEBUG")属性を付与してあるので、リリースビルド時はメソッド呼出が省略される
+            // 毎回チェックが入ると実行速度に大きく影響が出るので…。
+            CheckCacheBoundary();
 
             return _cache[(_head + _tempIndex++) % _cache.Length];
         }
