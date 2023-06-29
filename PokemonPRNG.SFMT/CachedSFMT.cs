@@ -51,6 +51,9 @@ namespace PokemonPRNG.SFMT
             return _cache[(_head + _tempIndex++) % _cache.Length];
         }
 
+        public void Advance(int n)
+            => _tempIndex += n;
+
         /// <summary>
         /// </summary>
         /// <param name="initialSeed">SFMTの初期seed</param>
