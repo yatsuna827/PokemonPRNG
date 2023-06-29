@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PokemonPRNG.MT\PokemonPRNG.MT.csproj" />
     <ProjectReference Include="..\PokemonPRNG.SFMT\PokemonPRNG.SFMT.csproj" />
   </ItemGroup>
 
