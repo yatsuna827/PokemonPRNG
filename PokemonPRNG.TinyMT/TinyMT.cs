@@ -148,15 +148,19 @@ namespace PokemonPRNG.TinyMT
             var x = (odd ? state.S2 ^ 0xfc78ff1f : state.S2) ^ (state.S3 << 10);
             var y = x ^ state.S3;
 
-            var s0 = x ^ s1 ^ s2;
-            var s3 = y;
-            for (int i = 1; i < 32; i++)
-            {
-                s0 ^= x << i;
-                s3 ^= y >> i;
-            }
+            x ^= x << 1;
+            x ^= x << 2;
+            x ^= x << 4;
+            x ^= x << 8;
+            x ^= x << 16;
 
-            return (s0, s1, s2, s3);
+            y ^= y >> 1;
+            y ^= y >> 2;
+            y ^= y >> 4;
+            y ^= y >> 8;
+            y ^= y >> 16;
+
+            return (x ^ s1 ^ s2, s1, s2, y);
         }
 
         public static (uint S0, uint S1, uint S2, uint S3) Advance(ref this (uint S0, uint S1, uint S2, uint S3) state)
@@ -184,15 +188,19 @@ namespace PokemonPRNG.TinyMT
             var x = (odd ? state.S2 ^ 0xfc78ff1f : state.S2) ^ (state.S3 << 10);
             var y = x ^ state.S3;
 
-            var s0 = x ^ s1 ^ s2;
-            var s3 = y;
-            for (int i = 1; i < 32; i++)
-            {
-                s0 ^= x << i;
-                s3 ^= y >> i;
-            }
+            x ^= x << 1;
+            x ^= x << 2;
+            x ^= x << 4;
+            x ^= x << 8;
+            x ^= x << 16;
 
-            return state = (s0, s1, s2, s3);
+            y ^= y >> 1;
+            y ^= y >> 2;
+            y ^= y >> 4;
+            y ^= y >> 8;
+            y ^= y >> 16;
+
+            return state = (x ^ s1 ^ s2, s1, s2, y);
         }
 
     }
