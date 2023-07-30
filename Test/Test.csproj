@@ -28,6 +28,7 @@
     <ProjectReference Include="..\PokemonPRNG.TinyMT\PokemonPRNG.TinyMT.csproj" />
     <ProjectReference Include="..\PokemonPRNG.Xoroshiro128p\PokemonPRNG.Xoroshiro128p.csproj" />
     <ProjectReference Include="..\PokemonPRNG.XorShift128\PokemonPRNG.XorShift128.csproj" />
+    <ProjectReference Include="..\PokemonPRNG\PokemonPRNG.csproj" />
   </ItemGroup>
 
 </Project>
