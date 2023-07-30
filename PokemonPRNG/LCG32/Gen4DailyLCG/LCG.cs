@@ -105,6 +105,6 @@ namespace PokemonPRNG.LCG32.Gen4DailyLCG
         /// <param name="seed"></param>
         /// <param name="InitialSeed"></param>
         /// <returns></returns>
-        public static uint GetIndex(this uint seed, uint InitialSeed) { return lcg.CalcIndex(seed) - lcg.CalcIndex(InitialSeed); }
+        public static uint GetIndex(this uint seed, uint initialSeed) => lcg.CalcIndex(seed, initialSeed);
     }
 }

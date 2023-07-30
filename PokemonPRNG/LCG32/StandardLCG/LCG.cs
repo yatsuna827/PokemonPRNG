@@ -15,7 +15,7 @@ namespace PokemonPRNG.LCG32.StandardLCG
         /// <param name="InitialSeed">初期seed</param>
         /// <param name="n">消費数</param>
         /// <returns></returns>
-        public static uint GetSeed(uint InitialSeed, uint n) { return lcg.NextSeed(InitialSeed, n); }
+        public static uint GetSeed(this uint InitialSeed, uint n) { return lcg.NextSeed(InitialSeed, n); }
 
         /// <summary>
         /// 次のseedを取得します. 渡したseedは変更されません.
@@ -105,7 +105,7 @@ namespace PokemonPRNG.LCG32.StandardLCG
         /// <param name="seed"></param>
         /// <param name="InitialSeed"></param>
         /// <returns></returns>
-        public static uint GetIndex(this uint seed, uint InitialSeed) { return lcg.CalcIndex(seed) - lcg.CalcIndex(InitialSeed); }
+        public static uint GetIndex(this uint seed, uint initialSeed) => lcg.CalcIndex(seed, initialSeed);
 
     }
 }

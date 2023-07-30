@@ -154,15 +154,47 @@ namespace PokemonPRNG.LCG32
 
         public uint CalcIndex(uint seed)
         {
-            return CalcIndex(seed, mulConst, addConst, 32);
-        }
-        private uint CalcIndex(uint seed, uint A, uint B, uint order)
-        {
-            if (order == 0) return 0;
-            else if ((seed & 1) == 0) return CalcIndex(seed / 2, A * A, (A + 1) * B / 2, order - 1) * 2;
-            else return CalcIndex((A * seed + B) / 2, A * A, (A + 1) * B / 2, order - 1) * 2 - 1;
+            var a = mulConst;
+            var b = addConst;
+
+            var result = 0x0u;
+
+            seed = seed * a + b;
+            for (uint i = 0, mask = 1; i < 32; i++, mask <<= 1)
+            {
+                if ((seed & mask) == 0)
+                    result |= mask;
+                else
+                    seed = seed * a + b;
+
+                // f^iを二乗する
+                (a, b) = (a * a, (a + 1) * b);
+            }
+
+            return result;
         }
 
+        public uint CalcIndex(uint seed, uint initialSeed)
+        {
+            var a = mulConst;
+            var b = addConst;
+
+            var result = 0x0u;
+
+            seed = seed * a + b;
+            for (uint i = 0, mask = 1; i < 32; i++, mask <<= 1)
+            {
+                if (((seed ^ initialSeed) & mask) == 0)
+                    result |= mask;
+                else
+                    seed = seed * a + b;
+
+                // f^iを二乗する
+                (a, b) = (a * a, (a + 1) * b);
+            }
+
+            return result;
+        }
     }
 
 }
