@@ -615,23 +615,66 @@ namespace PokemonPRNG.XorShift128
         TResult Generate((uint S0, uint S1, uint S2, uint S3) seed, TArg1 arg1);
     }
 
+    public interface IGeneratableEffectful<out TResult>
+    {
+        TResult Generate(ref (uint S0, uint S1, uint S2, uint S3) seed);
+    }
+    public interface IGeneratableEffectful<out TResult, in TArg1>
+    {
+        TResult Generate(ref (uint S0, uint S1, uint S2, uint S3) seed, TArg1 arg1);
+    }
+
     public static class CommonEnumerator
     {
-        public static IEnumerable<(int index, T element)> WithIndex<T>(this IEnumerable<T> enumerator)
+        public static TResult Generate<TResult>(this (uint S0, uint S1, uint S2, uint S3) seed, IGeneratable<TResult> generatable)
+            => generatable.Generate(seed);
+        public static TResult Generate<TResult, TArg>(this (uint S0, uint S1, uint S2, uint S3) seed, IGeneratable<TResult, TArg> generatable, TArg arg)
+            => generatable.Generate(seed, arg);
+        public static TResult Generate<TResult>(ref this (uint S0, uint S1, uint S2, uint S3) seed, IGeneratableEffectful<TResult> generatable)
+            => generatable.Generate(ref seed);
+        public static TResult Generate<TResult, TArg>(ref this (uint S0, uint S1, uint S2, uint S3) seed, IGeneratableEffectful<TResult, TArg> generatable, TArg arg)
+            => generatable.Generate(ref seed, arg);
+
+        public static IEnumerable<(int Index, T Element)> WithIndex<T>(this IEnumerable<T> enumerator)
             => enumerator.Select((_, i) => (i, _));
 
-        public static IEnumerable<(uint S0, uint S1, uint S2, uint S3)> EnumerateSeed(this (uint S0, uint S1, uint S2, uint S3) seed)
+        public static IEnumerable<(uint S0, uint S1, uint S2, uint S3)> Enumerate(this (uint S0, uint S1, uint S2, uint S3) seed)
         {
             yield return seed;
             while (true) yield return seed.Advance();
         }
-
-        public static IEnumerable<TResult> EnumerateGeneration<TResult>
+        public static IEnumerable<TResult> Enumerate<TResult>
             (this IEnumerable<(uint S0, uint S1, uint S2, uint S3)> seedEnumerator, IGeneratable<TResult> igenerator)
             => seedEnumerator.Select(igenerator.Generate);
-
-        public static IEnumerable<TResult> EnumerateGeneration<TResult, TArg1>
+        public static IEnumerable<TResult> Enumerate<TResult, TArg1>
             (this IEnumerable<(uint S0, uint S1, uint S2, uint S3)> seedEnumerator, IGeneratable<TResult, TArg1> igenerator, TArg1 arg1)
             => seedEnumerator.Select(_ => igenerator.Generate(_, arg1));
     }
+
+    public static class ApplyExtension
+    {
+        public static IGeneratable<TResult> Apply<TResult, TArg1>(this IGeneratable<TResult, TArg1> generatable, TArg1 arg1)
+            => new AppliedGeneratable<TResult, TArg1>(generatable, arg1);
+
+        public static IGeneratableEffectful<TResult> Apply<TResult, TArg1>(this IGeneratableEffectful<TResult, TArg1> generatable, TArg1 arg1)
+            => new AppliedRefGeneratable<TResult, TArg1>(generatable, arg1);
+    }
+
+    class AppliedGeneratable<TResult, TArg1> : IGeneratable<TResult>
+    {
+        private readonly TArg1 _arg;
+        private readonly IGeneratable<TResult, TArg1> _generatable;
+        public TResult Generate((uint S0, uint S1, uint S2, uint S3) seed) => _generatable.Generate(seed, _arg);
+        public AppliedGeneratable(IGeneratable<TResult, TArg1> generatable, TArg1 arg)
+            => (_generatable, _arg) = (generatable, arg);
+    }
+    class AppliedRefGeneratable<TResult, TArg1> : IGeneratableEffectful<TResult>
+    {
+        private readonly TArg1 _arg;
+        private readonly IGeneratableEffectful<TResult, TArg1> _generatable;
+        public TResult Generate(ref (uint S0, uint S1, uint S2, uint S3) seed) => _generatable.Generate(ref seed, _arg);
+        public AppliedRefGeneratable(IGeneratableEffectful<TResult, TArg1> generatable, TArg1 arg)
+            => (_generatable, _arg) = (generatable, arg);
+    }
+
 }
