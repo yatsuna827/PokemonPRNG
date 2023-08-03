@@ -131,15 +131,6 @@ namespace PokemonPRNG.Xoroshiro128p
             return (s0, s1);
         }
         
-        public static (ulong S0, ulong S1) Initialize(this ulong seed)
-            => (seed.Temper(0x9E3779B97F4A7C15), seed.Temper(0x3C6EF372FE94F82A));
-        private static ulong Temper(this ulong seed, ulong state)
-        {
-            seed += state;
-            seed = 0xBF58476D1CE4E5B9 * (seed ^ (seed >> 30));
-            seed = 0x94D049BB133111EB * (seed ^ (seed >> 27));
-            return seed ^ (seed >> 31);
-        }
     }
     
     public static class Xoroshiro128pJumpExt
@@ -630,9 +621,35 @@ namespace PokemonPRNG.Xoroshiro128p
         public static IEnumerable<TResult> Enumerate<TResult>
             (this IEnumerable<(ulong S0, ulong S1)> seedEnumerator, IGeneratable<TResult> igenerator)
             => seedEnumerator.Select(igenerator.Generate);
-
         public static IEnumerable<TResult> Enumerate<TResult, TArg1>
             (this IEnumerable<(ulong S0, ulong S1)> seedEnumerator, IGeneratable<TResult, TArg1> igenerator, TArg1 arg1)
             => seedEnumerator.Select(_ => igenerator.Generate(_, arg1));
     }
+
+    public static class ApplyExtension
+    {
+        public static IGeneratable<TResult> Apply<TResult, TArg1>(this IGeneratable<TResult, TArg1> generatable, TArg1 arg1)
+            => new AppliedGeneratable<TResult, TArg1>(generatable, arg1);
+
+        public static IGeneratableEffectful<TResult> Apply<TResult, TArg1>(this IGeneratableEffectful<TResult, TArg1> generatable, TArg1 arg1)
+            => new AppliedRefGeneratable<TResult, TArg1>(generatable, arg1);
+    }
+
+    class AppliedGeneratable<TResult, TArg1> : IGeneratable<TResult>
+    {
+        private readonly TArg1 _arg;
+        private readonly IGeneratable<TResult, TArg1> _generatable;
+        public TResult Generate((ulong S0, ulong S1) seed) => _generatable.Generate(seed, _arg);
+        public AppliedGeneratable(IGeneratable<TResult, TArg1> generatable, TArg1 arg)
+            => (_generatable, _arg) = (generatable, arg);
+    }
+    class AppliedRefGeneratable<TResult, TArg1> : IGeneratableEffectful<TResult>
+    {
+        private readonly TArg1 _arg;
+        private readonly IGeneratableEffectful<TResult, TArg1> _generatable;
+        public TResult Generate(ref (ulong S0, ulong S1) seed) => _generatable.Generate(ref seed, _arg);
+        public AppliedRefGeneratable(IGeneratableEffectful<TResult, TArg1> generatable, TArg1 arg)
+            => (_generatable, _arg) = (generatable, arg);
+    }
+
 }
