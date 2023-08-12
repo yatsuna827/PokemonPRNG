@@ -35,6 +35,8 @@ namespace Test
             var seed = (0x12345678u, 0xBEEFFACEu, 0xBADFACEu, 0x01010101u);
 
             Assert.Equal(seed.Next().Next().Next(), seed.Next(3));
+            Assert.Equal(seed.Next(255).Next().Next(), seed.Next(257));
+            Assert.Equal(seed.Next(1000).Next(1000), seed.Next(2000));
         }
 
         [Fact]
@@ -42,7 +44,18 @@ namespace Test
         {
             var seed = (0x12345678u, 0xBEEFFACEu, 0xBADFACEu, 0x01010101u);
 
-            Assert.Equal(seed.Prev().Prev().Prev(), seed.Prev(3));
+            Assert.Equal(seed.Prev().Prev().Prev().ToU127(), seed.Prev(3).ToU127());
+            Assert.Equal(seed.Prev(257).Next(257).ToU127(), seed.ToU127());
+            Assert.Equal(seed.Prev(1000).Next(1000).ToU127(), seed.ToU127());
+        }
+    }
+
+    static class Helper
+    {
+        public static (uint, uint, uint, uint) ToU127(this (uint, uint, uint, uint) seed)
+        {
+            var (s0, s1, s2, s3) = seed;
+            return (s0 & 0x7FFF_FFFF, s1, s2, s3);
         }
     }
 }
