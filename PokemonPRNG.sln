@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.XorShift128", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.LCG64", "PokemonPRNG.LCG64\PokemonPRNG.LCG64.csproj", "{05BAC5B5-DC59-49D3-BD5A-D106BC69F7B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2903DCE2-7AAD-4D9A-A38A-6777B09F9F38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{2903DCE2-7AAD-4D9A-A38A-6777B09F9F38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{F8486F13-6C2E-4FE0-A27F-8229273B65DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmark", "Benchmark\Benchmark.csproj", "{F8486F13-6C2E-4FE0-A27F-8229273B65DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonPRNG.SFMT.SIMD", "PokemonPRNG.SFMT.SIMD\PokemonPRNG.SFMT.SIMD.csproj", "{C4F9F571-7DBF-4194-9511-4388B3D5978C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{F8486F13-6C2E-4FE0-A27F-8229273B65DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8486F13-6C2E-4FE0-A27F-8229273B65DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8486F13-6C2E-4FE0-A27F-8229273B65DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F9F571-7DBF-4194-9511-4388B3D5978C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F9F571-7DBF-4194-9511-4388B3D5978C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F9F571-7DBF-4194-9511-4388B3D5978C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F9F571-7DBF-4194-9511-4388B3D5978C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
