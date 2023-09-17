@@ -5,6 +5,7 @@ using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using PokemonPRNG.SFMT;
+using PokemonPRNG.SFMT.SIMD;
 using PokemonPRNG.MT;
 
 var switcher = new BenchmarkSwitcher(new[]
@@ -37,18 +38,23 @@ public class SFMTBenchmark
 
     private SFMT? sfmt;
     private CachedSFMT? cached;
+    private SIMDSFMT? simd;
+    private CachedSIMDSFMT? simd_cached;
 
     [IterationSetup]
     public void Setup()
     {
-        sfmt = new SFMT(initialSeed);
-        cached = new CachedSFMT(initialSeed, 3);
+        sfmt = new(initialSeed);
+        cached = new(initialSeed, 3);
+        simd = new(initialSeed);
+        simd_cached = new(initialSeed, 3);
     }
 
     public IEnumerable<object[]> Loops()
     {
-        yield return new object[] { 1000000, 100 };
-        yield return new object[] { 20000, 5000 };
+        yield return new object[] { 10000000, 1 };
+        yield return new object[] { 100000, 100 };
+        yield return new object[] { 20000, 500 };
     }
 
     [Benchmark(Baseline = true)]
@@ -66,15 +72,44 @@ public class SFMTBenchmark
         return sum;
     }
 
-    [Benchmark]
+    [Benchmark()]
     [ArgumentsSource(nameof(Loops))]
     public long CachedSFMT(int mainLoop, int innerLoop)
     {
         var sum = 0u;
-        for (int i = 0; i < mainLoop; i++, cached!.Advance())
+        for (int i = 0; i < mainLoop; i++, cached!.MoveNext())
         {
             for (int k = 0; k < innerLoop; k++)
                 sum += cached!.GetRand32();
+        }
+
+        return sum;
+    }
+
+    [Benchmark]
+    [ArgumentsSource(nameof(Loops))]
+    public long SIMDSFMT(int mainLoop, int innerLoop)
+    {
+        var sum = 0u;
+        for (int i = 0; i < mainLoop; i++, simd.Advance())
+        {
+            var temp = simd!.Clone();
+            for (int k = 0; k < innerLoop; k++)
+                sum += temp.GetRand32();
+        }
+
+        return sum;
+    }
+
+    [Benchmark]
+    [ArgumentsSource(nameof(Loops))]
+    public long CachedSIMDSFMT(int mainLoop, int innerLoop)
+    {
+        var sum = 0u;
+        for (int i = 0; i < mainLoop; i++, simd_cached!.MoveNext())
+        {
+            for (int k = 0; k < innerLoop; k++)
+                sum += simd_cached!.GetRand32();
         }
 
         return sum;
