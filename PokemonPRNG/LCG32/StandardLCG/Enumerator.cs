@@ -39,6 +39,19 @@ namespace PokemonPRNG.LCG32.StandardLCG
             while (true) yield return seed.GetRand();
         }
 
+        public static IEnumerable<(uint Index, uint Seed, T Element)> Enumerate<T>(this uint seed, IGeneratable<T> generator, uint offset = 0)
+        {
+            var i = offset;
+            seed.Advance(offset);
+            while (true)
+            {
+                yield return (i, seed, generator.Generate(seed));
+
+                i++;
+                seed.Advance();
+            }
+        }
+
         public static IEnumerable<uint> Surround(this uint currentSeed, uint radius)
         {
             if (radius >= 0x80000000) throw new ArgumentException("radius is too large");
