@@ -21,23 +21,22 @@ namespace PokemonPRNG.LCG32
         void Use(ref uint seed, TArg1 arg1, TArg2 arg2, TArg3 arg3);
     }
 
-    public interface ILcgUtilizer<out TResult>
+    public interface ILcgConsumer : ILcgUser
     {
-        TResult Utilize(ref uint seed);
+        uint ComputeConsumption(uint seed);
     }
-    public interface ILcgUtilizer<out TResult, in TArg1>
+    public interface ILcgConsumer<in TArg1> : ILcgUser<TArg1>
     {
-        TResult Utilize(ref uint seed, TArg1 arg1);
+        uint ComputeConsumption(uint seed, TArg1 arg1);
     }
-    public interface ILcgUtilizer<out TResult, in TArg1, in TArg2>
+    public interface ILcgConsumer<in TArg1, in TArg2> : ILcgUser<TArg1, TArg2>
     {
-        TResult Utilize(ref uint seed, TArg1 arg1, TArg2 arg2);
+        uint ComputeConsumption(uint seed, TArg1 arg1, TArg2 arg2);
     }
-    public interface ILcgUtilizer<out TResult, in TArg1, in TArg2, in TArg3>
+    public interface ILcgConsumer<in TArg1, in TArg2, in TArg3> : ILcgUser<TArg1, TArg2, TArg3>
     {
-        TResult Utilize(ref uint seed, TArg1 arg1, TArg2 arg2, TArg3 arg3);
+        uint ComputeConsumption(uint seed, TArg1 arg1, TArg2 arg2, TArg3 arg3);
     }
-
 
     public static class LcgUserExt
     {
@@ -50,13 +49,13 @@ namespace PokemonPRNG.LCG32
         public static void Used<TArg1, TArg2, TArg3>(ref this uint seed, ILcgUser<TArg1, TArg2, TArg3> user, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => user.Use(ref seed, arg1, arg2, arg3);
 
-        public static TResult Used<TResult>(ref this uint seed, ILcgUtilizer<TResult> utilizer)
-            => utilizer.Utilize(ref seed);
-        public static TResult Used<TResult, TArg1>(ref this uint seed, ILcgUtilizer<TResult, TArg1> utilizer, TArg1 arg1)
-            => utilizer.Utilize(ref seed, arg1);
-        public static TResult Used<TResult, TArg1, TArg2>(ref this uint seed, ILcgUtilizer<TResult, TArg1, TArg2> utilizer, TArg1 arg1, TArg2 arg2)
-            => utilizer.Utilize(ref seed, arg1, arg2);
-        public static TResult Used<TResult, TArg1, TArg2, TArg3>(ref this uint seed, ILcgUtilizer<TResult, TArg1, TArg2, TArg3> utilizer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
-            => utilizer.Utilize(ref seed, arg1, arg2, arg3);
+        public static uint Advance(ref this uint seed, ILcgConsumer consumer)
+            => (seed = consumer.ComputeConsumption(seed));
+        public static uint Advance<TArg1>(ref this uint seed, ILcgConsumer<TArg1> consumer, TArg1 arg1)
+            => (seed = consumer.ComputeConsumption(seed, arg1));
+        public static uint Advance<TArg1, TArg2>(ref this uint seed, ILcgConsumer<TArg1, TArg2> consumer, TArg1 arg1, TArg2 arg2)
+            => (seed = consumer.ComputeConsumption(seed, arg1, arg2));
+        public static uint Advance<TArg1, TArg2, TArg3>(ref this uint seed, ILcgConsumer<TArg1, TArg2, TArg3> consumer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+            => (seed = consumer.ComputeConsumption(seed, arg1, arg2, arg3));
     }
 }

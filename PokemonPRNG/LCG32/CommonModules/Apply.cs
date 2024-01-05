@@ -27,12 +27,12 @@ namespace PokemonPRNG.LCG32
         public static ILcgUser Apply<TArg1, TArg2, Targ3>(this ILcgUser<TArg1, TArg2, Targ3> user, TArg1 arg1, TArg2 arg2, Targ3 arg3)
             => new AppliedUser<TArg1, TArg2, Targ3>(user, arg1, arg2, arg3);
 
-        public static ILcgUtilizer<TResult> Apply<TResult, TArg1>(this ILcgUtilizer<TResult, TArg1> utilizer, TArg1 arg1)
-            => new AppliedUtilizer<TResult, TArg1>(utilizer, arg1);
-        public static ILcgUtilizer<TResult> Apply<TResult, TArg1, TArg2>(this ILcgUtilizer<TResult, TArg1, TArg2> utilizer, TArg1 arg1, TArg2 arg2)
-            => new AppliedUtilizer<TResult, TArg1, TArg2>(utilizer, arg1, arg2);
-        public static ILcgUtilizer<TResult> Apply<TResult, TArg1, TArg2, Targ3>(this ILcgUtilizer<TResult, TArg1, TArg2, Targ3> utilizer, TArg1 arg1, TArg2 arg2, Targ3 arg3)
-            => new AppliedUtilizer<TResult, TArg1, TArg2, Targ3>(utilizer, arg1, arg2, arg3);
+        public static ILcgConsumer Apply<TArg1>(this ILcgConsumer<TArg1> consumer, TArg1 arg1)
+            => new AppliedConsumer<TArg1>(consumer, arg1);
+        public static ILcgConsumer Apply<TResult, TArg1, TArg2>(this ILcgConsumer<TArg1, TArg2> consumer, TArg1 arg1, TArg2 arg2)
+            => new AppliedConsumer<TArg1, TArg2>(consumer, arg1, arg2);
+        public static ILcgConsumer Apply<TResult, TArg1, TArg2, Targ3>(this ILcgConsumer<TArg1, TArg2, Targ3> consumer, TArg1 arg1, TArg2 arg2, Targ3 arg3)
+            => new AppliedConsumer<TArg1, TArg2, Targ3>(consumer, arg1, arg2, arg3);
     }
 
 
@@ -120,31 +120,37 @@ namespace PokemonPRNG.LCG32
             => (_user, _arg1, _arg2, _arg3) = (user, arg1, arg2, arg3);
     }
 
-    class AppliedUtilizer<TResult, TArg1> : ILcgUtilizer<TResult>
+    class AppliedConsumer<TArg1> : ILcgConsumer
     {
         private readonly TArg1 _arg;
-        private readonly ILcgUtilizer<TResult, TArg1> _utilizer;
-        public TResult Utilize(ref uint seed) => _utilizer.Utilize(ref seed, _arg);
-        public AppliedUtilizer(ILcgUtilizer<TResult, TArg1> utilizer, TArg1 arg)
-            => (_utilizer, _arg) = (utilizer, arg);
+        private readonly ILcgConsumer<TArg1> _consumer;
+        public void Use(ref uint seed) => _consumer.Use(ref seed, _arg);
+        public uint ComputeConsumption(uint seed) => _consumer.ComputeConsumption(seed, _arg);
+
+        public AppliedConsumer(ILcgConsumer<TArg1> consumer, TArg1 arg)
+            => (_consumer, _arg) = (consumer, arg);
     }
-    class AppliedUtilizer<TResult, TArg1, TArg2> : ILcgUtilizer<TResult>
+    class AppliedConsumer<TArg1, TArg2> : ILcgConsumer
     {
         private readonly TArg1 _arg1;
         private readonly TArg2 _arg2;
-        private readonly ILcgUtilizer<TResult, TArg1, TArg2> _utilizer;
-        public TResult Utilize(ref uint seed) => _utilizer.Utilize(ref seed, _arg1, _arg2);
-        public AppliedUtilizer(ILcgUtilizer<TResult, TArg1, TArg2> utilizer, TArg1 arg1, TArg2 arg2)
-            => (_utilizer, _arg1, _arg2) = (utilizer, arg1, arg2);
+        private readonly ILcgConsumer<TArg1, TArg2> _consumer;
+        public void Use(ref uint seed) => _consumer.Use(ref seed, _arg1, _arg2);
+        public uint ComputeConsumption(uint seed) => _consumer.ComputeConsumption(seed, _arg1, _arg2);
+
+        public AppliedConsumer(ILcgConsumer<TArg1, TArg2> consumer, TArg1 arg1, TArg2 arg2)
+            => (_consumer, _arg1, _arg2) = (consumer, arg1, arg2);
     }
-    class AppliedUtilizer<TResult, TArg1, TArg2, TArg3> : ILcgUtilizer<TResult>
+    class AppliedConsumer<TArg1, TArg2, TArg3> : ILcgConsumer
     {
         private readonly TArg1 _arg1;
         private readonly TArg2 _arg2;
         private readonly TArg3 _arg3;
-        private readonly ILcgUtilizer<TResult, TArg1, TArg2, TArg3> _utilizer;
-        public TResult Utilize(ref uint seed) => _utilizer.Utilize(ref seed, _arg1, _arg2, _arg3);
-        public AppliedUtilizer(ILcgUtilizer<TResult, TArg1, TArg2, TArg3> utilizer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
-            => (_utilizer, _arg1, _arg2, _arg3) = (utilizer, arg1, arg2, arg3);
+        private readonly ILcgConsumer<TArg1, TArg2, TArg3> _consumer;
+        public void Use(ref uint seed) => _consumer.Use(ref seed, _arg1, _arg2, _arg3);
+        public uint ComputeConsumption(uint seed) => _consumer.ComputeConsumption(seed, _arg1, _arg2, _arg3);
+
+        public AppliedConsumer(ILcgConsumer<TArg1, TArg2, TArg3> consumer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+            => (_consumer, _arg1, _arg2, _arg3) = (consumer, arg1, arg2, arg3);
     }
 }
