@@ -49,6 +49,15 @@ namespace PokemonPRNG.LCG32
         public static void Used<TArg1, TArg2, TArg3>(ref this uint seed, ILcgUser<TArg1, TArg2, TArg3> user, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => user.Use(ref seed, arg1, arg2, arg3);
 
+        public static uint NextSeed(this uint seed, ILcgConsumer consumer)
+            => consumer.ComputeConsumption(seed);
+        public static uint NextSeed<TArg1>(this uint seed, ILcgConsumer<TArg1> consumer, TArg1 arg1)
+            => consumer.ComputeConsumption(seed, arg1);
+        public static uint NextSeed<TArg1, TArg2>(this uint seed, ILcgConsumer<TArg1, TArg2> consumer, TArg1 arg1, TArg2 arg2)
+            => consumer.ComputeConsumption(seed, arg1, arg2);
+        public static uint NextSeed<TArg1, TArg2, TArg3>(this uint seed, ILcgConsumer<TArg1, TArg2, TArg3> consumer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+            => consumer.ComputeConsumption(seed, arg1, arg2, arg3);
+
         public static uint Advance(ref this uint seed, ILcgConsumer consumer)
             => (seed = consumer.ComputeConsumption(seed));
         public static uint Advance<TArg1>(ref this uint seed, ILcgConsumer<TArg1> consumer, TArg1 arg1)
