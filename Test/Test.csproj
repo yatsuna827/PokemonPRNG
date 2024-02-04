@@ -23,12 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PokemonPRNG.LCG32\PokemonPRNG.LCG32.Core\PokemonPRNG.LCG32.Core.csproj" />
+    <ProjectReference Include="..\PokemonPRNG.LCG32\PokemonPRNG.LCG32.StandardLCG\PokemonPRNG.LCG32.StandardLCG.csproj" />
     <ProjectReference Include="..\PokemonPRNG.MT\PokemonPRNG.MT.csproj" />
     <ProjectReference Include="..\PokemonPRNG.SFMT\PokemonPRNG.SFMT.csproj" />
     <ProjectReference Include="..\PokemonPRNG.TinyMT\PokemonPRNG.TinyMT.csproj" />
     <ProjectReference Include="..\PokemonPRNG.Xoroshiro128p\PokemonPRNG.Xoroshiro128p.csproj" />
     <ProjectReference Include="..\PokemonPRNG.XorShift128\PokemonPRNG.XorShift128.csproj" />
-    <ProjectReference Include="..\PokemonPRNG\PokemonPRNG.csproj" />
   </ItemGroup>
 
 </Project>

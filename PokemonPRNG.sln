@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG", "PokemonPRNG\PokemonPRNG.csproj", "{BE37AE67-4FFD-4241-B43E-6606F592D28B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{E51E7966-B9F7-404B-8528-4E4AFC6EE332}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.SFMT", "PokemonPRNG.SFMT\PokemonPRNG.SFMT.csproj", "{03B45527-D740-4E0B-93B1-CDE399E6A2D3}"
@@ -35,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.LCG32.StaticLCG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.LCG32.AlternativeLCG", "PokemonPRNG.LCG32\PokemonPRNG.LCG32.AlternativeLCG\PokemonPRNG.LCG32.AlternativeLCG.csproj", "{3BBC42FD-6EFE-4E5E-BDAA-82980B2E212E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PokemonPRNG.LCG32", "PokemonPRNG.LCG32\PokemonPRNG.LCG32", "{EF5AEBA9-1338-43CE-8453-98806D234B95}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PokemonPRNG.LCG32", "PokemonPRNG.LCG32", "{EF5AEBA9-1338-43CE-8453-98806D234B95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BE37AE67-4FFD-4241-B43E-6606F592D28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE37AE67-4FFD-4241-B43E-6606F592D28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE37AE67-4FFD-4241-B43E-6606F592D28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE37AE67-4FFD-4241-B43E-6606F592D28B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Release|Any CPU.ActiveCfg = Release|Any CPU
