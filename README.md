@@ -38,7 +38,7 @@
 ## 開発環境
 
 ### ビルド
-Visual Studioでソリューション(`PokemonPRNG.sln`)をビルド：
+Visual Studioでソリューション(`PokemonPRNG.slnx`)をビルド：
 - **ソリューション全体**: Ctrl+Shift+B
 - **特定プロジェクト**: 右クリック → ビルド
 - **リリース構成**: 構成マネージャーでRelease選択

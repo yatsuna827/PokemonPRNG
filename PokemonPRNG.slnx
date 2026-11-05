@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/PokemonPRNG.LCG32/">
+    <Project Path="ConsoleApp1/ConsoleApp1.csproj" />
+    <Project Path="PokemonPRNG.LCG32/PokemonPRNG.LCG32.AlternativeLCG/PokemonPRNG.LCG32.AlternativeLCG.csproj" />
+    <Project Path="PokemonPRNG.LCG32/PokemonPRNG.LCG32.Core/PokemonPRNG.LCG32.Core.csproj" />
+    <Project Path="PokemonPRNG.LCG32/PokemonPRNG.LCG32.GCLCG/PokemonPRNG.LCG32.GCLCG.csproj" />
+    <Project Path="PokemonPRNG.LCG32/PokemonPRNG.LCG32.StandardLCG/PokemonPRNG.LCG32.StandardLCG.csproj" />
+    <Project Path="PokemonPRNG.LCG32/PokemonPRNG.LCG32.StaticLCG/PokemonPRNG.LCG32.StaticLCG.csproj" />
+  </Folder>
+  <Project Path="Benchmark/Benchmark.csproj" />
+  <Project Path="PokemonPRNG.LCG64/PokemonPRNG.LCG64.csproj" />
+  <Project Path="PokemonPRNG.MT/PokemonPRNG.MT.csproj" />
+  <Project Path="PokemonPRNG.SFMT.SIMD/PokemonPRNG.SFMT.SIMD.csproj" />
+  <Project Path="PokemonPRNG.SFMT/PokemonPRNG.SFMT.csproj" />
+  <Project Path="PokemonPRNG.TinyMT/PokemonPRNG.TinyMT.csproj" />
+  <Project Path="PokemonPRNG.Xoroshiro128p/PokemonPRNG.Xoroshiro128p.csproj" />
+  <Project Path="PokemonPRNG.XorShift128/PokemonPRNG.XorShift128.csproj" />
+  <Project Path="Test/Test.csproj" />
+</Solution>
