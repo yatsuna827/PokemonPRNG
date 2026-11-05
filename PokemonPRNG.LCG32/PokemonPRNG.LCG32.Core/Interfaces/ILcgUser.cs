@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace PokemonPRNG.LCG32
@@ -40,30 +41,42 @@ namespace PokemonPRNG.LCG32
 
     public static class LcgUserExt
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Used(ref this uint seed, ILcgUser user)
             => user.Use(ref seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Used<TArg1>(ref this uint seed, ILcgUser<TArg1> user, TArg1 arg1)
             => user.Use(ref seed, arg1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Used<TArg1, TArg2>(ref this uint seed, ILcgUser<TArg1, TArg2> user, TArg1 arg1, TArg2 arg2)
             => user.Use(ref seed, arg1, arg2);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Used<TArg1, TArg2, TArg3>(ref this uint seed, ILcgUser<TArg1, TArg2, TArg3> user, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => user.Use(ref seed, arg1, arg2, arg3);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint NextSeed(this uint seed, ILcgConsumer consumer)
             => consumer.ComputeConsumption(seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint NextSeed<TArg1>(this uint seed, ILcgConsumer<TArg1> consumer, TArg1 arg1)
             => consumer.ComputeConsumption(seed, arg1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint NextSeed<TArg1, TArg2>(this uint seed, ILcgConsumer<TArg1, TArg2> consumer, TArg1 arg1, TArg2 arg2)
             => consumer.ComputeConsumption(seed, arg1, arg2);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint NextSeed<TArg1, TArg2, TArg3>(this uint seed, ILcgConsumer<TArg1, TArg2, TArg3> consumer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => consumer.ComputeConsumption(seed, arg1, arg2, arg3);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Advance(ref this uint seed, ILcgConsumer consumer)
             => (seed = consumer.ComputeConsumption(seed));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Advance<TArg1>(ref this uint seed, ILcgConsumer<TArg1> consumer, TArg1 arg1)
             => (seed = consumer.ComputeConsumption(seed, arg1));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Advance<TArg1, TArg2>(ref this uint seed, ILcgConsumer<TArg1, TArg2> consumer, TArg1 arg1, TArg2 arg2)
             => (seed = consumer.ComputeConsumption(seed, arg1, arg2));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Advance<TArg1, TArg2, TArg3>(ref this uint seed, ILcgConsumer<TArg1, TArg2, TArg3> consumer, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => (seed = consumer.ComputeConsumption(seed, arg1, arg2, arg3));
     }

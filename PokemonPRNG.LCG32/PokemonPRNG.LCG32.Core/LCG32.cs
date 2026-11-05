@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace PokemonPRNG.LCG32
 {
@@ -59,13 +60,17 @@ namespace PokemonPRNG.LCG32
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint NextSeed(uint seed) => seed * mulConst + addConst;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint NextSeed(uint seed, uint n)
         {
             for (int i = 0; i < 4; i++) seed = seed * mulConstCache[i, (n >> (i * 8)) & 0xff] + addConstCache[i, (n >> (i * 8)) & 0xff];
             return seed;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint PrevSeed(uint seed) => seed * mulInvConst + addInvConst;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint PrevSeed(uint seed, uint n)
         {
             for (int i = 0; i < 4; i++) seed = seed * mulInvConstCache[i, (n >> (i * 8)) & 0xff] + addInvConstCache[i, (n >> (i * 8)) & 0xff];

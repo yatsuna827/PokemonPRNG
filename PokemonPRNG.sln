@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.31911.260
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11723.231 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{E51E7966-B9F7-404B-8528-4E4AFC6EE332}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.SFMT", "PokemonPRNG.SFMT\PokemonPRNG.SFMT.csproj", "{03B45527-D740-4E0B-93B1-CDE399E6A2D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.MT", "PokemonPRNG.MT\PokemonPRNG.MT.csproj", "{FAF3A53C-9DC9-4811-ABA8-82A99865368F}"
@@ -35,16 +33,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonPRNG.LCG32.Alternati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PokemonPRNG.LCG32", "PokemonPRNG.LCG32", "{EF5AEBA9-1338-43CE-8453-98806D234B95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{6F1E7132-F90A-418E-A752-67B929D7C7F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E51E7966-B9F7-404B-8528-4E4AFC6EE332}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03B45527-D740-4E0B-93B1-CDE399E6A2D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{03B45527-D740-4E0B-93B1-CDE399E6A2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03B45527-D740-4E0B-93B1-CDE399E6A2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -101,6 +97,10 @@ Global
 		{3BBC42FD-6EFE-4E5E-BDAA-82980B2E212E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BBC42FD-6EFE-4E5E-BDAA-82980B2E212E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BBC42FD-6EFE-4E5E-BDAA-82980B2E212E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F1E7132-F90A-418E-A752-67B929D7C7F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F1E7132-F90A-418E-A752-67B929D7C7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F1E7132-F90A-418E-A752-67B929D7C7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F1E7132-F90A-418E-A752-67B929D7C7F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +111,7 @@ Global
 		{A9F832D1-19C5-4B53-A894-C4EAE4C44398} = {EF5AEBA9-1338-43CE-8453-98806D234B95}
 		{97503D28-F687-47EB-8B92-3B97738683A7} = {EF5AEBA9-1338-43CE-8453-98806D234B95}
 		{3BBC42FD-6EFE-4E5E-BDAA-82980B2E212E} = {EF5AEBA9-1338-43CE-8453-98806D234B95}
+		{6F1E7132-F90A-418E-A752-67B929D7C7F0} = {EF5AEBA9-1338-43CE-8453-98806D234B95}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D622CC2-7613-49D2-94C5-D0829A3FA407}

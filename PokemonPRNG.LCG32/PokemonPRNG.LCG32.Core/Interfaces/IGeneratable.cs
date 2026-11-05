@@ -1,4 +1,6 @@
-﻿namespace PokemonPRNG.LCG32
+﻿using System.Runtime.CompilerServices;
+
+namespace PokemonPRNG.LCG32
 {
     public interface IGeneratable<out TResult>
     {
@@ -36,21 +38,29 @@
 
     public static class GeneratorExt
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult>(this uint seed, IGeneratable<TResult> generator)
             => generator.Generate(seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult, TArg1>(this uint seed, IGeneratable<TResult, TArg1> generator, TArg1 arg1)
             => generator.Generate(seed, arg1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult, TArg1, TArg2>(this uint seed, IGeneratable<TResult, TArg1, TArg2> generator, TArg1 arg1, TArg2 arg2)
             => generator.Generate(seed, arg1, arg2);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult, TArg1, TArg2, TArg3>(this uint seed, IGeneratable<TResult, TArg1, TArg2, TArg3> generator, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => generator.Generate(seed, arg1, arg2, arg3);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult>(ref this uint seed, IGeneratableEffectful<TResult> generator)
             => generator.Generate(ref seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult, TArg1>(ref this uint seed, IGeneratableEffectful<TResult, TArg1> generator, TArg1 arg1)
             => generator.Generate(ref seed, arg1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult, TArg1, TArg2>(ref this uint seed, IGeneratableEffectful<TResult, TArg1, TArg2> generator, TArg1 arg1, TArg2 arg2)
             => generator.Generate(ref seed, arg1, arg2);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult Generate<TResult, TArg1, TArg2, TArg3>(ref this uint seed, IGeneratableEffectful<TResult, TArg1, TArg2, TArg3> generator, TArg1 arg1, TArg2 arg2, TArg3 arg3)
             => generator.Generate(ref seed, arg1, arg2, arg3);
     }

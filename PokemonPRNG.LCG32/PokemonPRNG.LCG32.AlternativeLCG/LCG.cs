@@ -1,4 +1,6 @@
-﻿namespace PokemonPRNG.LCG32.AlternativeLCG
+﻿using System.Runtime.CompilerServices;
+
+namespace PokemonPRNG.LCG32.AlternativeLCG
 {
     public static class AlternativeLCGExtension
     {
@@ -9,6 +11,7 @@
         /// <param name="initialSeed">初期seed</param>
         /// <param name="n">消費数</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint GetSeed(uint initialSeed, uint n) => lcg.NextSeed(initialSeed, n);
 
         /// <summary>
@@ -16,7 +19,8 @@
         /// </summary>
         /// <param name="seed"></param>
         /// <returns></returns>
-        public static uint NextSeed(this uint seed) => lcg.NextSeed(seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint NextSeed(this uint seed) => seed * 0x6C078965 + 1;
 
         /// <summary>
         /// n先のseedを取得します. 渡したseedは変更されません.
@@ -24,6 +28,7 @@
         /// <param name="seed"></param>
         /// <param name="n"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint NextSeed(this uint seed, uint n) => lcg.NextSeed(seed, n);
 
         /// <summary>
@@ -31,7 +36,8 @@
         /// </summary>
         /// <param name="seed"></param>
         /// <returns></returns>
-        public static uint PrevSeed(this uint seed) => lcg.PrevSeed(seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint PrevSeed(this uint seed) => seed * 0x9638806D + 0x69C77F93;
 
         /// <summary>
         /// n前のseedを取得します. 渡したseedは変更されません.
@@ -39,6 +45,7 @@
         /// <param name="seed"></param>
         /// <param name="n"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint PrevSeed(this uint seed, uint n) => lcg.PrevSeed(seed, n);
 
         /// <summary>
@@ -46,7 +53,8 @@
         /// </summary>
         /// <param name="seed"></param>
         /// <returns>更新後のseed</returns>
-        public static uint Advance(ref this uint seed) => seed = lcg.NextSeed(seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Advance(ref this uint seed) => seed = seed.NextSeed();
 
         /// <summary>
         /// seedをn進めます.
@@ -54,6 +62,7 @@
         /// <param name="seed"></param>
         /// <param name="n"></param>
         /// <returns>更新後のseed</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Advance(ref this uint seed, uint n) => seed = lcg.NextSeed(seed, n);
 
         /// <summary>
@@ -61,7 +70,8 @@
         /// </summary>
         /// <param name="seed"></param>
         /// <returns>更新後のseed</returns>
-        public static uint Back(ref this uint seed) => seed = lcg.PrevSeed(seed);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Back(ref this uint seed) => seed = seed.PrevSeed();
 
         /// <summary>
         /// seedをn戻します.
@@ -69,6 +79,7 @@
         /// <param name="seed"></param>
         /// <param name="n"></param>
         /// <returns>更新後のseed</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Back(ref this uint seed, uint n) => seed = lcg.PrevSeed(seed, n);
 
         /// <summary>
@@ -76,6 +87,7 @@
         /// </summary>
         /// <param name="seed"></param>
         /// <returns>16bit乱数値</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint GetRand(ref this uint seed) => seed.Advance() >> 16;
 
         /// <summary>
@@ -84,6 +96,7 @@
         /// <param name="seed"></param>
         /// <param name="modulo"></param>
         /// <returns>o~(module-1)の値</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint GetRand(ref this uint seed, uint m) => (seed.Advance() >> 16) % m;
 
         /// <summary>
@@ -91,6 +104,7 @@
         /// </summary>
         /// <param name="seed"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint GetIndex(this uint seed) => lcg.CalcIndex(seed);
 
         /// <summary>
@@ -99,6 +113,7 @@
         /// <param name="seed"></param>
         /// <param name="initialSeed"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint GetIndex(this uint seed, uint initialSeed) => lcg.CalcIndex(seed, initialSeed);
     }
 }
